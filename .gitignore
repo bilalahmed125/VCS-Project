@@ -1,0 +1,9 @@
+# Ignore build/ and output/ folders
+build/
+output/
+
+# Ignore VS Code workspace settings
+.vscode/
+
+# Ignore OS-specific files
+Thumbs.db
