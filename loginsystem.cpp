@@ -1,0 +1,199 @@
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+struct id{
+    string account,email;
+    string pass;
+}user[15];
+
+int usercount=0;
+
+int choose();
+void login();
+void signup();
+void forgotPass();
+void deleteUser();
+
+int main(){
+    int choice;
+    do{
+		choice = choose();
+		
+		if(choice == 1){
+		login(); 
+		}
+		else if(choice == 2){
+		signup();
+		}
+		else if(choice == 3){
+		forgotPass();
+		}
+        else if(choice == 4){
+        deleteUser();
+        }
+        else if(choice == 5){
+        system("cls");
+		cout<<"\n\t \033[32mExiting...\033[0m"<<endl;
+		cout<<"\n\033[32mThanks for using the Mini Version Control System! Goodbye!\033[0m\n"<<endl;
+		break;
+		} 
+    }while(choice!=5);
+}
+
+int choose(){
+    
+    system("cls");
+    int ch;
+    cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT LOGIN \n\033[0m\033[0m";
+	cout<<"\n\033[1;4;36m=================================================================\t\033[0m"<<endl;
+	cout<<"\n\t\033[33m1-Log-in Account.\033[0m"<<endl;
+	cout<<"\n\t\033[33m2-Sign-up Account.\033[0m"<<endl;
+	cout<<"\n\t\033[33m3-Forgot Password.\033[0m"<<endl;
+    cout<<"\n\t\033[31m4-Delete Account.\033[0m"<<endl;
+    cout<<"\n\t\033[31m5-Exit.\033[0m"<<endl;
+    cout<<"\n\033[1;4;36m=================================================================\t\033[0m"<<endl;
+    cout<<"\n\033[4;36mEnter your choice(1-9): \033[0m";
+	cin>>ch;
+	cin.ignore();
+    return ch;
+
+}
+
+void login(){
+
+	char choice;
+
+do{ 
+	system("cls");
+	string id,enteredpass;
+
+	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT LOGIN\n\033[0m\033[0m"; 
+	cout<<"ACCOUNT ID: ";
+	cin>>id;
+	cout<<"PASSWORD: ";
+	cin>>enteredpass;
+
+bool sameacc =false,samepass=false;
+	ifstream check("login.txt");
+	string fileacc,filepass,fileemail;	
+	
+	while(check>>fileacc>>filepass>>fileemail){ 
+	if(fileacc==id){
+			sameacc = true;
+		if(filepass==enteredpass)
+			{samepass=true;
+			break;}
+		if(filepass!=enteredpass){
+			for(int i=1;i<=3;i++){
+				cout<<"Password Incorrect! Please Try Again (Tries left:"<<4-i<<") : ";
+				cin>>enteredpass;
+				if(filepass==enteredpass){
+					samepass=true;
+					break;
+				}
+			}
+		}
+	} 
+}
+if(sameacc && samepass){
+	system("cls");
+	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT LOGIN\n\033[0m\033[0m"; 
+	cout<<"LOGIN SUCCESSFUL!! "<<endl;
+	cout<<"WELCOME "<<fileacc<<" ! :) ";
+	cout<<"\033[35m\n";
+	system("pause");
+	cout<<"\033[0m";
+	check.close();
+	return;
+}
+if(!sameacc) {
+		cout<<"No ACCOUNTS with USER NAME : " << id <<endl;
+		cout<<"Do You Want to Re-enter the Account and Password?(y/n): ";
+		cin>>choice;
+		if(choice == 'n' || choice == 'N'){
+			cout<<"EXITING...";
+			check.close();
+			return;
+		}
+		else if(choice != 'y' && choice !='Y'){
+			for(int i=0;i<3;i++){ 
+			cout<<"Invalid Choice! Please Try again (y/n): " ;
+			cin>>choice;
+			if(choice == 'y' || choice == 'Y' || choice == 'n' || choice == 'N'){
+					break;
+				}
+			if(i==2){
+				cout<<"Too many Failed Attempts!";
+				check.close();
+				return;			}
+			}
+		}
+	}
+ }while(choice =='y'|| choice == 'Y');
+
+}
+
+
+void signup(){
+	system("cls");
+
+	ofstream loginFile("login.txt",ios::app);
+	
+	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT SIGN-UP\n\033[0m\033[0m";
+	cout<<"\n\n\t[1;3;32mPLEASE ENTER YOUR DETAILS!!\n\n";
+
+		cout<<"ACCOUNT ID: ";
+		cin>>user[usercount].account;
+		cout<<"PASSWORD: ";
+		cin>>user[usercount].pass;
+		cout<<"EMAIL: ";
+		cin>>user[usercount].email;
+		
+	bool sameacc =false,sameemail=false;
+	ifstream check("login.txt");
+	string acc,pass,email;	
+	
+	while(check>>acc>>pass>>email){ 
+	if(acc==user[usercount].account){
+			sameacc = true;
+	}
+	if(email==user[usercount].email){
+		sameemail=true;
+	}
+	}
+	check.close();
+	if(sameacc){
+		cout<<"\n\t\033[31mAccount ID already exists! Try another one.\033[0m"<<endl;
+	}
+	else if(sameemail){
+		cout<<"\n\t\033[31mEMAIL linked with another account! Try another one! \033[0m"<<endl;
+	}
+	else{
+		loginFile<<user[usercount].account<<" ";
+		loginFile<<user[usercount].pass<<" ";
+		loginFile<<user[usercount].email<<" "<<endl;
+
+	cout<<"ACCOUNT CREATED SUCCESSFULLY!!!"<<endl;
+	usercount++;
+		return;
+}
+cout<<"ACCOUNT CREATION FAILED!!!"<<endl;
+cout<<"Please Try AGAIN!";
+
+}
+
+void forgotPass(){
+	system("cls");
+	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT FORGOT PASSWORD\n\033[0m\033[0m";
+
+
+}
+
+void deleteUser(){
+	system("cls");
+	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT DELETION \n\033[0m\033[0m";
+
+
+}
