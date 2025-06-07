@@ -250,9 +250,9 @@ else if( foundacc && foundemail){
 }
 
 void deleteUser(){
-	system("cls");
-	cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT DELETION \n\033[0m\033[0m";
-	string id,pass;
+    system("cls");
+    cout<<"\n\n\t\t\t\033[1;4;31mMINI-GIT ACCOUNT DELETION \n\033[0m\033[0m";
+    string id,pass;
     cout<<"Account ID: ";
     cin>>id;
     cout<<"Password: ";
@@ -261,49 +261,44 @@ void deleteUser(){
     ifstream read("login.txt");
     ofstream write("temp_login.txt");
     string fileacc,filepass,fileemail;
-    bool flagacc = false,flagpass=false;
+    bool flagacc=false,flagpass=false;
 
     while(read>>fileacc>>filepass>>fileemail){
         if(fileacc==id){
-            flagacc = true;
+            flagacc=true;
             if(filepass==pass){
-                flagpass =true;
-                continue;
-			}
+                flagpass=true;
+                continue; 
+            }
         }
-            write<<fileacc<<" "<<filepass<<" "<<fileemail <<endl;
+        write<<fileacc<<" "<<filepass<< " "<<fileemail<<endl;
     }
-    
-    remove("login.txt");
-    rename("temp_login.txt","login.txt");
-	if (remove("login.txt") != 0) {
-    perror("Error deleting login.txt");
-}
-if (rename("temp_login.txt", "login.txt") != 0) {
-    perror("Error renaming file");
-}
     read.close();
     write.close();
-    
+
+    remove("login.txt");
+    rename("temp_login.txt", "login.txt");
+
     if(flagpass && flagacc){
-		for(int i=0;i<usercount; i++)			                 //updates the global variable and its values  
-		{    if (user[i].account == id) {
-				for(int j=i;j<usercount-1;j++){		         //puts all the users in the respective places (after the user has been dleted);
-					user[j] = user[j+1];
-				}
-				usercount--;
-				break;
-			}
-		}
+        for(int i=0;i<usercount;i++){			// Removung from global array if exist
+            if(user[i].account==id){
+                for(int j=i;j<usercount-1;j++){
+                    user[j] = user[j+1];
+                }
+                usercount--;
+                break;
+            }
+        }
         cout<<"ACCOUNT "<<id<<" has been deleted SUCCESSFULLY! ";
     }
     else if(!flagacc){
-        cout<<"Account with id : "<<id<<" , NOT FOUND! UNABLE TO DELTE!"<<endl;
+        cout<<"Account with id: "<<id<<" NOT FOUND!";
     }
-    else if(!flagpass) cout<<"PASSWORD INCORRECT! for user id: "<<id<<endl;  
-
+    else if(!flagpass){
+        cout<<"INCORRECT PASSWORD for user: "<<id;
+    }
+    cout<<endl;
     system("pause");
-
 }
 
 void showusers(){
